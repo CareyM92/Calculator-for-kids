@@ -28,32 +28,32 @@ td{
 .digitButton:active{
     background-color: #4d5058;
     color: #80ffaa;
-    border: 4px double #e9ecea; /* or any color you want */
-    box-shadow: inset 0 2px 8px #6fe897; /* Creates a pressed-in effect */
+    border: 4px double #e9ecea; 
+    box-shadow: inset 0 2px 8px #6fe897; 
 }
 
 .operatorButton:active{
     background-color: #4d5058;
     color: #80ffaa;
-    border: 4px double #e9ecea; /* or any color you want */
-    box-shadow: inset 0 2px 8px #6fe897; /* Creates a pressed-in effect */
+    border: 4px double #e9ecea; 
+    box-shadow: inset 0 2px 8px #6fe897; 
 }
 
 #equalButton:active{
     background-color: #1b7806;
     color: #80ffaa;
     border-left: none !important;
-    border: 4px double #e9ecea; /* or any color you want */
-    box-shadow: inset 0 2px 8px #6fe897; /* Creates a pressed-in effect */
+    border: 4px double #e9ecea; 
+    box-shadow: inset 0 2px 8px #6fe897; 
 }
 
 .backspaceButton {
     background-color: #F2B55A;
-    border-left: 4px double #e9ecea; /* or any color you want */
+    border-left: 4px double #e9ecea; 
 }
 
 .ACButton {
     background-color: #F2B55A;
-    border-right: 4px double #e9ecea; /* or any color you want */
+    border-right: 4px double #e9ecea; 
 }
 

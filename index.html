@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Smart Calculator</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      :root {
+        --main-bg: linear-gradient(to right, #ff9a9e, #fad0c4);
+        --accent: #ffdd57;
+      }
+
+      body {
+        font-family: "Comic Sans MS", cursive, sans-serif;
+        background: var(--main-bg);
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .character {
+        font-size: 1.5rem;
+        margin-bottom: 1rem;
+        animation: wave 2s infinite;
+      }
+
+      @keyframes wave {
+        0%,
+        100% {
+          transform: rotate(0deg);
+        }
+        50% {
+          transform: rotate(10deg);
+        }
+      }
+
+      .calculator {
+        background: #fff;
+        padding: 1rem;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        width: 320px;
+        max-width: 90vw;
+        position: relative;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        margin: 0 auto;
+        justify-content: center;
+      }
+
+      #inputBox {
+        width: 100%;
+        font-size: 2rem;
+        text-align: right;
+        padding: 0.5rem;
+        margin-bottom: 1rem;
+        border: 2px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+        width: 100%;
+      }
+
+      .buttons {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 0.5rem;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .buttons button {
+        font-size: 1.2rem;
+        padding: 1rem;
+        border: none;
+        border-radius: 5px;
+        background: #e0e0e0;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+      }
+
+      .buttons button:active {
+        transform: scale(0.95);
+      }
+
+      .operator:active::after {
+        content: "✨";
+        position: absolute;
+        top: -10px;
+        right: -10px;
+        animation: sparkleTrail 0.6s linear;
+      }
+
+      @keyframes sparkleTrail {
+        0% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(2);
+        }
+      }
+
+      .AC,
+      .back {
+        background-color: #ff7a7a;
+        color: #f92828;
+        font-weight: bold;
+      }
+
+      .operator {
+        background: var(--accent);
+      }
+
+      #equal {
+        grid-column: span 2;
+        background: #9eea4b;
+      }
+
+      .coded {
+        text-align: center;
+        font-size: 0.9rem;
+        margin-top: 1rem;
+        color: #555;
+        animation: sparkleFade 1s ease-in-out infinite;
+      }
+
+      @keyframes sparkleFade {
+        0%,
+        100% {
+          opacity: 0.2;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+
+      .coder-name {
+        font-weight: bold;
+        margin-left: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="calculator">
+      <input type="text" id="inputBox" value="0" readonly />
+      <div class="buttons">
+        <button class="AC" onclick="btnACPressed()">AC</button>
+        <button class="back" onclick="backspaceBtnPressed()">⌫</button>
+        <button class="operator" onclick="percentageBtnPressed()">%</button>
+
+        <button class="operator" onclick="operatorBtnPressed('÷')">÷</button>
+        <button onclick="digitBtnPressed(7)">7</button>
+        <button onclick="digitBtnPressed(8)">8</button>
+        <button onclick="digitBtnPressed(9)">9</button>
+
+        <button class="operator" onclick="operatorBtnPressed('*')">×</button>
+        <button onclick="digitBtnPressed(4)">4</button>
+        <button onclick="digitBtnPressed(5)">5</button>
+        <button onclick="digitBtnPressed(6)">6</button>
+
+        <button class="operator" onclick="operatorBtnPressed('-')">−</button>
+        <button onclick="digitBtnPressed(1)">1</button>
+        <button onclick="digitBtnPressed(2)">2</button>
+        <button onclick="digitBtnPressed(3)">3</button>
+
+        <button class="operator" onclick="operatorBtnPressed('+')">+</button>
+        <button onclick="decimalBtnPressed()">.</button>
+        <button onclick="digitBtnPressed(0)">0</button>
+        <button id="equal" onclick="equalsBtnPressed()">=</button>
+      </div>
+    </div>
+    <div class="coded">
+      CODED BY<span class="coder-name">CAREY-ANN MEINIE ✨</span>
+    </div>
+
+    <script>
+      let newLine = true;
+      let value1;
+      let currentOperator;
+
+      function digitBtnPressed(num) {
+        playClick();
+        const inputBox = document.getElementById("inputBox");
+        inputBox.value = newLine ? num : inputBox.value + num;
+        newLine = false;
+      }
+
+      function decimalBtnPressed() {
+        playClick();
+        const inputBox = document.getElementById("inputBox");
+        if (newLine) {
+          inputBox.value = "0.";
+          newLine = false;
+        } else if (!inputBox.value.includes(".")) {
+          inputBox.value += ".";
+        }
+      }
+
+      function btnACPressed() {
+        playClick();
+        document.getElementById("inputBox").value = "0";
+        newLine = true;
+        value1 = null;
+        currentOperator = null;
+      }
+
+      function backspaceBtnPressed() {
+        playClick();
+        const inputBox = document.getElementById("inputBox");
+        inputBox.value =
+          inputBox.value.length > 1 ? inputBox.value.slice(0, -1) : "0";
+        newLine = inputBox.value === "0";
+      }
+
+      function operatorBtnPressed(operator) {
+        playClick();
+        const inputBox = document.getElementById("inputBox");
+        const currentValue = parseFloat(inputBox.value);
+        if (currentOperator && !newLine) {
+          switch (currentOperator) {
+            case "+":
+              value1 += currentValue;
+              break;
+            case "-":
+              value1 -= currentValue;
+              break;
+            case "*":
+              value1 *= currentValue;
+              break;
+            case "÷":
+              value1 /= currentValue;
+              break;
+          }
+          inputBox.value = value1;
+        } else {
+          value1 = currentValue;
+        }
+        currentOperator = operator;
+        newLine = true;
+      }
+
+      function equalsBtnPressed() {
+        playMagic();
+        const inputBox = document.getElementById("inputBox");
+        const value2 = parseFloat(inputBox.value);
+        let result;
+        switch (currentOperator) {
+          case "+":
+            result = value1 + value2;
+            break;
+          case "-":
+            result = value1 - value2;
+            break;
+          case "*":
+            result = value1 * value2;
+            break;
+          case "÷":
+            result = value2 === 0 ? "😱 Can't divide by 0!" : value1 / value2;
+            break;
+        }
+        inputBox.value = result + " 🎉";
+        newLine = true;
+        value1 = null;
+        currentOperator = null;
+      }
+
+      function percentageBtnPressed() {
+        playMagic();
+        const inputBox = document.getElementById("inputBox");
+        const currentValue = parseFloat(inputBox.value);
+        let result;
+        if (value1 != null && currentOperator != null) {
+          switch (currentOperator) {
+            case "+":
+              result = value1 + (value1 * currentValue) / 100;
+              break;
+            case "-":
+              result = value1 - (value1 * currentValue) / 100;
+              break;
+            case "*":
+              result = value1 * (currentValue / 100);
+              break;
+            case "÷":
+              result = value1 / (currentValue / 100);
+              break;
+          }
+          inputBox.value = result + " 🎉";
+        } else {
+          inputBox.value = currentValue / 100 + " 🎉";
+        }
+        newLine = true;
+        value1 = null;
+        currentOperator = null;
+      }
+
+      function playClick() {
+        const audio = new Audio(
+          "https://freesound.org/data/previews/67/67334_93149-lq.mp3"
+        );
+        audio.play();
+      }
+
+      function playMagic() {
+        const audio = new Audio(
+          "https://freesound.org/data/previews/251/251461_4486188-lq.mp3"
+        );
+        audio.play();
+      }
+
+      document.addEventListener("keydown", function (e) {
+        const key = e.key;
+        if (!isNaN(key)) digitBtnPressed(key);
+        else if (["+", "-", "*", "/"].includes(key)) operatorBtnPressed(key);
+        else if (key === ".") decimalBtnPressed();
+        else if (key === "Enter") equalsBtnPressed();
+        else if (key === "Backspace") backspaceBtnPressed();
+      });
+    </script>
+  </body>
+</html>
